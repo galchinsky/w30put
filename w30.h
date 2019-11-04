@@ -1,0 +1,104 @@
+#ifndef W30_H
+#define W30_H
+
+typedef struct _tone_dir_elem {
+    char name[8];
+    char padding_byte;
+    char subToneNumber;
+    char subType;
+    char rate;
+    char orgKey;
+    char ramNumber;
+    char position;
+    char size;
+} ToneDirElem;
+
+typedef struct _envelope_segment {
+    char level;
+    char rate;
+} EnvelopeSegment;
+
+typedef struct _tone_parms {
+    char name[8];
+    char outputNumber;
+    char subToneNumber;
+    char subType;
+    char rate;
+    char orgKey;
+    char ramNumber;
+    char position;
+    char size;
+
+    char start[3];
+    char stop[3];
+    char loop[3];
+    char loopMode;              
+    char unknown[25]; 
+    char tvaSustainSegment; // 0== 1st segment
+    char tvaReleaseSegment; //    "    "         
+    EnvelopeSegment tvaSegments[8];
+    char unknown2[2];
+    char outputLevel;
+    char unknown3[33];
+    char pitchFollow;	
+    char unknown4;
+    char tvfSustainSegment;
+    char tvfReleaseSegment;
+    EnvelopeSegment tvfSegments[8];
+} ToneParams;
+
+typedef struct _patch_elem {
+    char name[12];
+    char bendRange;
+    char out;//always 00 out?keyassign?
+    char keyAssign;//always 00 out? keyassign? ROT/FIX
+    char keyMode;//key mode fade=04 norm=00 uni = 01 vsw = 03 mix = 02?
+    char vSwThresh;
+    char keys_lo[109];
+    char keys_hi[109];
+    char unknown1;
+    char unknown2;
+    char volume;
+    char unknown3;
+    char uniDetune;
+    char vMixRatio;
+    char atSense;
+    char zeroes[14];
+} PatchElem;
+
+#define RAM_A 0
+#define RAM_B 1
+#define RAM_UNUSED 2
+
+#define RATE_15K 1
+#define RATE_30K 0       
+
+#define LOOP_FORWARD 0
+#define LOOP_ALTER 1
+#define LOOP_ONESHOT 2
+#define LOOP_REVERSE 3
+
+const char DiskHeader[] = {
+0x00,0x00,0x00,0x00,0x57,0x2d,0x33,0x30,
+0x20,0x20,0x20,0x20,0x06,0x00,0x00,0x01,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0xfe,
+0x57,0x2d,0x33,0x30,0x20,0x53,0x6f,0x75,
+0x6e,0x64,0x20,0x26,0x20,0x53,0x6f,0x6e,
+0x67,0x20,0x44,0x61,0x74,0x61,0x20,0x44,
+0x69,0x73,0x6b,0x20,0x20,0x20,0x20,0xfe,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0xfe,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0x20,
+0x20,0x20,0x20,0x20,0x20,0x20,0x20,0xfe};
+
+// Prototypes
+
+unsigned long Get12BitValue(unsigned char *) ;
+void Put12BitValue(unsigned char *,unsigned long) ;
+
+#endif

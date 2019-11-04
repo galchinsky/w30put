@@ -1,0 +1,6 @@
+First run makeall.sh, then "pip install librosa numpy",
+then "python converter.py -h"
+
+You may need hxcfe.exe, libhxcfe.dll and libusbhxcfe.dll if you
+have the same HXC floppy emulator as me.
+
